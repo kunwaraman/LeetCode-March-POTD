@@ -1,0 +1,51 @@
+import java.util.*;
+
+public class MaximumNumberOfPointsFromGrids {
+
+        int direct[][]={{0,1},{0,-1},{1,0},{-1,0}};
+        public int[] maxPoints(int[][] grid, int[] queries) {
+            int m = grid.length;
+            int n = grid[0].length;
+            int q = queries.length;
+            int ans[] = new int[q];
+            for(int i=0;i<q;i++){
+                ans[i]=bfs(grid,queries[i],m,n);
+            }
+            return ans;
+        }
+        public int bfs(int[][] grid,int val,int m,int n){
+            m=grid.length;
+            n=grid[0].length;
+            Queue<int[]> queue = new LinkedList<>();
+            queue.add(new int[]{0,0});
+            boolean vis[][] = new boolean[m][n];
+            vis[0][0]=true;
+            int count=0;
+            while(!queue.isEmpty()){
+                int size = queue.size();
+                for(int i=0;i<size;i++){
+                    int curr[] = queue.remove();
+                    int k=curr[0];
+                    int j=curr[1];
+                    if(grid[k][j]>val){
+                        continue;
+                    }
+                    count++;
+                    for(int dir[]:direct){
+                        int i_=k+dir[0];
+                        int j_=j+dir[1];
+                        if(i_>=0 && i_<m && j_>=0 && j_<n && !vis[i_][j_] && grid[i_][j_]<val){
+                            queue.add(new int[]{i_,j_});
+                            vis[i_][j_]=true;
+                        }
+                    }
+
+                }
+
+            }
+            return count;
+
+
+        }
+
+}
